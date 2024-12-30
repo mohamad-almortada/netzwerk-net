@@ -1,0 +1,30 @@
+# Binaries
+bin/
+obj/
+
+# Dependencies
+packages/
+
+# User-specific files
+*.suo
+*.user
+
+# Temporary files
+.vs/
+*.log
+*.bak
+*.cache
+*.tmp
+
+# Environment-specific files
+.env
+appsettings.Development.json
+secrets.json
+
+# Visual Studio files
+.vscode/
+.vs/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln.docstates
