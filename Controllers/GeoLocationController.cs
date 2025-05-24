@@ -19,7 +19,6 @@ namespace Netzwerk.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<GeoLocationDto>>> GetGeoLocations()
         {
             var geoLocations = await _geoLocationService.GetGeoLocationsAsync();
