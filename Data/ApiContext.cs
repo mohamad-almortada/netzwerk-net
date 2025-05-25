@@ -13,17 +13,6 @@ public class ApiContext(DbContextOptions<ApiContext> options) : DbContext(option
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        
-        // builder.Entity<User>()
-        //     .HasMany(u => u.Markers)
-        //     .WithOne(m => m.User)
-        //     .HasForeignKey(m => m.UserId)
-        //     .OnDelete(DeleteBehavior.SetNull);
-        //
-        // builder.Entity<User>()
-        //     .HasIndex(u => u.Email)
-        //     .IsUnique();
-        
         builder.Entity<Marker>()
             .HasOne(m => m.User)
             .WithMany(u => u.Markers)
@@ -47,8 +36,4 @@ public class ApiContext(DbContextOptions<ApiContext> options) : DbContext(option
             .HasForeignKey(v => v.MarkerId)
             .OnDelete(DeleteBehavior.Cascade);
     }
-    
-    
-    
-    
 }
