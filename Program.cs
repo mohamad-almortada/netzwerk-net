@@ -18,6 +18,9 @@ builder.Services.AddDbContext<ApiContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMarkerService, MarkerService>();
+builder.Services.AddScoped<IMapService, MapService>();
+builder.Services.AddScoped<IVoteService, VoteService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
