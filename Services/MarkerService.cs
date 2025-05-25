@@ -13,18 +13,23 @@ public class MarkerService(ApiContext apiContext, IMapper mapper) : IMarkerServi
     {
         var markerToAdd = mapper.Map<Marker>(markerDto);
         var marker = await apiContext.Markers.AddAsync(markerToAdd);
+        markerToAdd.CreatedAt = DateTime.Now;
+        markerToAdd.UpdatedAt = DateTime.Now;
+
         await apiContext.SaveChangesAsync();
         return markerDto;
     }
 
-    public Task<MarkerDto?> GetMarkerAsync(int markerId)
+    public async Task<MarkerDto?> GetMarkerAsync(int markerId)
     {
-        throw new NotImplementedException();
+        var marker = await apiContext.Markers.FindAsync(markerId);
+        return mapper.Map<MarkerDto>(marker);
     }
 
-    public Task<MarkerDto?> GetMarkerAsync(decimal latitude, decimal longitude)
+    public async Task<MarkerDto?> GetMarkerAsync(decimal latitude, decimal longitude)
     {
-        throw new NotImplementedException();
+        var marker = await apiContext.Markers.FindAsync(latitude, longitude);
+        return mapper.Map<MarkerDto>(marker);
     }
 
     public async Task<IEnumerable<MarkerDto>> GetMarkersAsync()
@@ -34,13 +39,25 @@ public class MarkerService(ApiContext apiContext, IMapper mapper) : IMarkerServi
         return dtos;
     }
 
-    public Task<MarkerDto?> UpdateMarkerAsync(int markerId, MarkerDto markerDto)
+    public async Task<MarkerDto?> UpdateMarkerAsync(int markerId, MarkerDto markerDto)
     {
-        throw new NotImplementedException();
+        var marker = await apiContext.Markers.FindAsync(markerId);
+        if (marker == null) return null;
+        marker.Title = markerDto.Title;
+        marker.Description = markerDto.Description;
+        marker.Lat = markerDto.Lat;
+        marker.Lon = markerDto.Lon;
+        marker.UpdatedAt = DateTime.Now;
+        await apiContext.SaveChangesAsync();
+        return markerDto;
     }
 
-    public Task<bool> DeleteMarkerAsync(int markerId)
+    public async Task<bool> DeleteMarkerAsync(int markerId)
     {
-        throw new NotImplementedException();
+        var marker = await apiContext.Markers.FindAsync(markerId);
+        if (marker == null) return false;
+        apiContext.Markers.Remove(marker);
+        await apiContext.SaveChangesAsync();
+        return true;
     }
 }

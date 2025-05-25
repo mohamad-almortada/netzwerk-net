@@ -9,9 +9,11 @@ public class UsersDto
     public string Email { get; set; } = string.Empty;
 
     public UsersDto CreateCopy(UsersDto userDto)
-        => new()
+    {
+        return new UsersDto
         {
             Username = userDto.Username,
-            Email = userDto.Email,
+            Email = userDto.Email
         };
+    }
 }

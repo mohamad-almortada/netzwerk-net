@@ -12,11 +12,11 @@ public class UserService(ApiContext apiContext, ILogger<UserService> logger, IMa
     public async Task<User> CreateUserAsync(UsersDto userDto)
     {
         var myUser = mapper.Map<User>(userDto);
-        
+
         if (!IsEmailUnique(myUser.Email)) throw new DbUpdateException("Email already in use");
-        
+
         myUser.CreatedAt = DateTime.Now;
-        
+
         await apiContext.Users.AddAsync(myUser);
         await apiContext.SaveChangesAsync();
         return myUser;
@@ -27,7 +27,7 @@ public class UserService(ApiContext apiContext, ILogger<UserService> logger, IMa
     {
         var user = await apiContext.Users.FindAsync(userId);
         if (user == null) return false;
-        
+
         apiContext.Users.Remove(user);
         await apiContext.SaveChangesAsync();
         return true;
@@ -37,12 +37,12 @@ public class UserService(ApiContext apiContext, ILogger<UserService> logger, IMa
     {
         var user = await apiContext.Users
             .SingleOrDefaultAsync(u => u.Id == userId);
-        
+
         if (user == null) return null;
-        
+
         var userDto = mapper.Map<UsersDto>(user);
-        
-        
+
+
         return userDto;
     }
 
@@ -51,12 +51,12 @@ public class UserService(ApiContext apiContext, ILogger<UserService> logger, IMa
         var user = (await apiContext.Markers
             .Include(u => u.User)
             .SingleOrDefaultAsync(u => u.Lat == latitude && u.Lon == longitude))?.User;
-        
+
         if (user == null) return null;
-        
+
         var userDto = mapper.Map<UsersDto>(user);
-        
-        
+
+
         return userDto;
     }
 
@@ -77,7 +77,7 @@ public class UserService(ApiContext apiContext, ILogger<UserService> logger, IMa
         user.Username = userDto.Username;
         user.Email = userDto.Email;
         user.UpdatedAt = DateTime.Now;
-        
+
         await apiContext.SaveChangesAsync();
         return userDto;
     }
