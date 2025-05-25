@@ -13,7 +13,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Email,
                 opt => opt.MapFrom(src =>
                     src.Email)); 
-        CreateMap<UsersDto, User>();
+        CreateMap<MarkerDto, Marker>();
+        CreateMap<Marker, MarkerDto>();
 
     }
 }

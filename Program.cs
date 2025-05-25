@@ -1,9 +1,9 @@
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using Netzwerk.Data;
+using Netzwerk.Interfaces;
 using Netzwerk.Mappers;
-using Netzwerk.Service;
-using Netzwerk.Service.UserService;
+using Netzwerk.Services;
 using Newtonsoft.Json;
 
 
@@ -17,6 +17,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApiContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IMarkerService, MarkerService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();

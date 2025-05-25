@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Netzwerk.DTOs;
-using Netzwerk.Service;
+using Netzwerk.Interfaces;
 
 namespace Netzwerk.Controllers;
 
@@ -65,10 +65,6 @@ public class UserController(IUserService userService) : ControllerBase
             var myUser = await userService.UpdateUserAsync(id, user);
 
             return Ok(myUser);
-        }
-        catch (UserServiceException e)
-        {
-            return BadRequest(e.Message);
         }
         catch (Exception e)
         {

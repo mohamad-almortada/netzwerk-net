@@ -2,9 +2,10 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Netzwerk.Data;
 using Netzwerk.DTOs;
+using Netzwerk.Interfaces;
 using Netzwerk.Model;
 
-namespace Netzwerk.Service.UserService;
+namespace Netzwerk.Services;
 
 public class UserService(ApiContext apiContext, ILogger<UserService> logger, IMapper mapper) : IUserService
 {
@@ -14,6 +15,7 @@ public class UserService(ApiContext apiContext, ILogger<UserService> logger, IMa
         
         if (!IsEmailUnique(myUser.Email)) throw new DbUpdateException("Email already in use");
         
+        myUser.CreatedAt = DateTime.Now;
         
         await apiContext.Users.AddAsync(myUser);
         await apiContext.SaveChangesAsync();
@@ -59,20 +61,33 @@ public class UserService(ApiContext apiContext, ILogger<UserService> logger, IMa
     }
 
 
-    public Task<User> GetUserByEmailAsync(string email)
+    public async Task<UsersDto?> GetUserByEmailAsync(string email)
     {
-        throw new NotImplementedException();
+        var user = await apiContext.Users.SingleOrDefaultAsync(u => u.Email == email);
+        if (user == null) return null;
+        var userDto = mapper.Map<UsersDto>(user);
+        return userDto;
     }
 
-    public Task<UsersDto> UpdateUserAsync(int userId, UsersDto userDto)
+    public async Task<UsersDto?> UpdateUserAsync(int userId, UsersDto userDto)
     {
-        throw new NotImplementedException();
+        var user = await apiContext.Users.FindAsync(userId);
+        if (user == null) return null;
+
+        user.Username = userDto.Username;
+        user.Email = userDto.Email;
+        user.UpdatedAt = DateTime.Now;
+        
+        await apiContext.SaveChangesAsync();
+        return userDto;
     }
 
 
-    public Task<IEnumerable<UsersDto>> GetUsersAsync()
+    public async Task<IEnumerable<UsersDto>> GetUsersAsync()
     {
-        throw new NotImplementedException();
+        var users = await apiContext.Users.ToListAsync();
+        var usersDto = mapper.Map<IEnumerable<UsersDto>>(users);
+        return usersDto;
     }
 
 

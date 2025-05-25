@@ -7,4 +7,11 @@ public class UsersDto
 {
     public required string Username { get; set; }
     public string Email { get; set; } = string.Empty;
+
+    public UsersDto CreateCopy(UsersDto userDto)
+        => new()
+        {
+            Username = userDto.Username,
+            Email = userDto.Email,
+        };
 }
