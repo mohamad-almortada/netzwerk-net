@@ -1,54 +1,58 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>false</InvariantGlobalization>
-    <UserSecretsId>893737c4-0c21-4f4d-8450-148ed8b6ecd9</UserSecretsId>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>false</InvariantGlobalization>
+        <UserSecretsId>893737c4-0c21-4f4d-8450-148ed8b6ecd9</UserSecretsId>
+    </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>DEBUG;</DefineConstants>
-    <DebugType>full</DebugType>
-  </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DefineConstants>DEBUG;</DefineConstants>
+        <DebugType>full</DebugType>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="DotNetEnv" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.11" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.3.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="13.0.1"/>
+        <PackageReference Include="DotNetEnv" Version="3.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.11"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.3"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.3.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Netzwerk\appsettings.Development.json" />
-    <_ContentIncludedByDefault Remove="Netzwerk\appsettings.json" />
-    <_ContentIncludedByDefault Remove="Netzwerk\bin\Debug\net8.0\appsettings.Development.json" />
-    <_ContentIncludedByDefault Remove="Netzwerk\bin\Debug\net8.0\appsettings.json" />
-    <_ContentIncludedByDefault Remove="Netzwerk\bin\Debug\net8.0\Netzwerk.deps.json" />
-    <_ContentIncludedByDefault Remove="Netzwerk\bin\Debug\net8.0\Netzwerk.runtimeconfig.json" />
-    <_ContentIncludedByDefault Remove="Netzwerk\obj\Debug\net8.0\Netzwerk.sourcelink.json" />
-    <_ContentIncludedByDefault Remove="Netzwerk\obj\Debug\net8.0\staticwebassets.build.json" />
-    <_ContentIncludedByDefault Remove="Netzwerk\obj\Netzwerk.csproj.nuget.dgspec.json" />
-    <_ContentIncludedByDefault Remove="Netzwerk\obj\project.assets.json" />
-    <_ContentIncludedByDefault Remove="Netzwerk\obj\project.packagespec.json" />
-    <_ContentIncludedByDefault Remove="Netzwerk\Properties\launchSettings.json" />
-  </ItemGroup>
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="Netzwerk\appsettings.Development.json"/>
+        <_ContentIncludedByDefault Remove="Netzwerk\appsettings.json"/>
+        <_ContentIncludedByDefault Remove="Netzwerk\bin\Debug\net8.0\appsettings.Development.json"/>
+        <_ContentIncludedByDefault Remove="Netzwerk\bin\Debug\net8.0\appsettings.json"/>
+        <_ContentIncludedByDefault Remove="Netzwerk\bin\Debug\net8.0\Netzwerk.deps.json"/>
+        <_ContentIncludedByDefault Remove="Netzwerk\bin\Debug\net8.0\Netzwerk.runtimeconfig.json"/>
+        <_ContentIncludedByDefault Remove="Netzwerk\obj\Debug\net8.0\Netzwerk.sourcelink.json"/>
+        <_ContentIncludedByDefault Remove="Netzwerk\obj\Debug\net8.0\staticwebassets.build.json"/>
+        <_ContentIncludedByDefault Remove="Netzwerk\obj\Netzwerk.csproj.nuget.dgspec.json"/>
+        <_ContentIncludedByDefault Remove="Netzwerk\obj\project.assets.json"/>
+        <_ContentIncludedByDefault Remove="Netzwerk\obj\project.packagespec.json"/>
+        <_ContentIncludedByDefault Remove="Netzwerk\Properties\launchSettings.json"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Netzwerk.sln"/>
+    </ItemGroup>
 
 </Project>

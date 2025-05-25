@@ -7,27 +7,19 @@ namespace Netzwerk.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class UserController(IUserService userService) : ControllerBase
 {
-    private readonly IUserService _userService;
-
-    public UserController(IUserService userService)
-    {
-        _userService = userService;
-    }
-
-
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UsersDto>>> GetUsers()
     {
-        var users = await _userService.GetUsersAsync();
+        var users = await userService.GetUsersAsync();
         return Ok(users);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<UsersDto>> GetUser(int id)
     {
-        var user = await _userService.GetUserAsync(id);
+        var user = await userService.GetUserAsync(id);
         if (user == null) return NotFound();
 
         return Ok(user);
@@ -36,11 +28,8 @@ public class UserController : ControllerBase
     [HttpGet("{latitude}/{longitude}")]
     public async Task<ActionResult<UsersDto>> GetUserByCoodrinate(string latitude, string longitude)
     {
-        var user = await _userService.GetUserAsync(latitude, longitude);
-        if (user == null)
-        {
-            return NotFound();
-        }
+        var user = await userService.GetUserAsync(Convert.ToDecimal(latitude), Convert.ToDecimal(longitude));
+        if (user == null) return NotFound();
 
         return Ok(user);
     }
@@ -50,23 +39,20 @@ public class UserController : ControllerBase
     {
         try
         {
-            var userResponse = await _userService.CreateUserAsync(userDto);
+            var userResponse = await userService.CreateUserAsync(userDto);
             return Ok(userResponse);
         }
         catch (DbUpdateException e)
         {
-            return BadRequest(e.InnerException.Message);
+            return BadRequest(e.InnerException?.Message);
         }
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
-        var user = await _userService.DeleteUserAsync(id);
-        if (user == false)
-        {
-            return NotFound();
-        }
+        var user = await userService.DeleteUserAsync(id);
+        if (user == false) return NotFound();
 
         return NoContent();
     }
@@ -76,7 +62,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            var myUser = await _userService.UpdateUserAsync(id, user);
+            var myUser = await userService.UpdateUserAsync(id, user);
 
             return Ok(myUser);
         }

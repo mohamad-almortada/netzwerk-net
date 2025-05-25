@@ -1,14 +1,19 @@
-    using AutoMapper;
-    using Netzwerk.DTOs;
-    using Netzwerk.Model;
+using AutoMapper;
+using Netzwerk.DTOs;
+using Netzwerk.Model;
 
-namespace Netzwerk.Mappers
+namespace Netzwerk.Mappers;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            CreateMap<Keyword, KeywordDto>();
-        }
+        CreateMap<User, UsersDto>()
+            .ForMember(dest=> dest.Username, opt=> opt.MapFrom(src=> src.Username))
+            .ForMember(dest => dest.Email,
+                opt => opt.MapFrom(src =>
+                    src.Email)); 
+        CreateMap<UsersDto, User>();
+
     }
 }

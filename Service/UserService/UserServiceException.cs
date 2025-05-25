@@ -1,9 +1,8 @@
-namespace Netzwerk.Service
+namespace Netzwerk.Service;
+
+public class UserServiceException : Exception
 {
-    public class UserServiceException : Exception
+    public UserServiceException(string message) : base(message)
     {
-        public UserServiceException(string message) : base(message)
-        {
-        }
     }
 }

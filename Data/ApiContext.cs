@@ -1,45 +1,54 @@
 using Microsoft.EntityFrameworkCore;
 using Netzwerk.Model;
 
-namespace Netzwerk.Data
+namespace Netzwerk.Data;
+
+public class ApiContext(DbContextOptions<ApiContext> options) : DbContext(options)
 {
-    public class ApiContext : DbContext
+    public DbSet<User> Users { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Marker> Markers { get; set; }
+    public DbSet<Vote> Votes { get; set; }
+    public DbSet<Map> Maps { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        public ApiContext(DbContextOptions<ApiContext> options) : base(options)
-        {
-        }
+        
+        // builder.Entity<User>()
+        //     .HasMany(u => u.Markers)
+        //     .WithOne(m => m.User)
+        //     .HasForeignKey(m => m.UserId)
+        //     .OnDelete(DeleteBehavior.SetNull);
+        //
+        // builder.Entity<User>()
+        //     .HasIndex(u => u.Email)
+        //     .IsUnique();
+        
+        builder.Entity<Marker>()
+            .HasOne(m => m.User)
+            .WithMany(u => u.Markers)
+            .HasForeignKey(m => m.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Keyword> Keywords { get; set; }
-        public DbSet<UserKeyword> UserKeyword { get; set; }
-        public DbSet<GeoLocation> GeoLocations { get; set; }
+        builder.Entity<Marker>()
+            .HasOne(m => m.Verifier)
+            .WithMany()
+            .HasForeignKey(m => m.VerifiedBy)
+            .OnDelete(DeleteBehavior.Restrict);
+        builder.Entity<Vote>()
+            .HasOne(v => v.User)
+            .WithMany(u => u.Votes)
+            .HasForeignKey(v => v.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-
-         protected override void OnModelCreating(ModelBuilder builder)
-        {
-
-            builder.Entity<User>()
-                .HasIndex(u => u.Email)
-                .IsUnique();
-
-             builder.Entity<UserKeyword>()
-                .HasKey(uk => new { uk.UserId, uk.KeywordId });
-
-            builder.Entity<UserKeyword>()
-                .HasOne(ba => ba.User)
-                .WithMany(b => b.UserKeywords)
-                .HasForeignKey(ba => ba.UserId);
-            
-            builder.Entity<UserKeyword>()
-                .HasOne(ba => ba.Keyword)
-                .WithMany(a => a.UserKeywords)
-                .HasForeignKey(ba => ba.KeywordId);
-            builder.Entity<GeoLocation>()
-                .HasKey(cs => new { cs.Latitude, cs.Longitude });
-            builder.Entity<GeoLocation>()
-                .HasMany(cs => cs.Users)
-                .WithOne(u => u.GeoLocation)
-                .HasForeignKey(u => new { u.GeoLocationLat, u.GeoLocationLon });
-        }
+        builder.Entity<Vote>()
+            .HasOne(v => v.Marker)
+            .WithMany(m => m.Votes)
+            .HasForeignKey(v => v.MarkerId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
+    
+    
+    
+    
 }

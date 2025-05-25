@@ -1,7 +1,9 @@
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using Netzwerk.Data;
+using Netzwerk.Mappers;
 using Netzwerk.Service;
+using Netzwerk.Service.UserService;
 using Newtonsoft.Json;
 
 
@@ -14,10 +16,8 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApiContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddScoped<IKeywordService, KeywordService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IGeoLocationService, GeoLocationservice>();
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
