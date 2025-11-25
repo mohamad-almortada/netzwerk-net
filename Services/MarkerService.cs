@@ -26,7 +26,7 @@ public class MarkerService(ApiContext apiContext, IMapper mapper) : IMarkerServi
         return mapper.Map<MarkerDto>(marker);
     }
 
-    public async Task<MarkerDto?> GetMarkerAsync(decimal latitude, decimal longitude)
+    public async Task<MarkerDto?> GetMarkerAsync(string latitude, string longitude)
     {
         var marker = await apiContext.Markers.FindAsync(latitude, longitude);
         return mapper.Map<MarkerDto>(marker);
@@ -48,6 +48,11 @@ public class MarkerService(ApiContext apiContext, IMapper mapper) : IMarkerServi
         marker.Lat = markerDto.Lat;
         marker.Lon = markerDto.Lon;
         marker.UpdatedAt = DateTime.Now;
+        marker.Status = markerDto.Status;
+        marker.VerifiedBy = markerDto.VerifiedBy;
+        marker.VerifiedAt = DateTime.Now;
+        marker.MapId = markerDto.MapId;
+        marker.UserId = markerDto.UserId;
         await apiContext.SaveChangesAsync();
         return markerDto;
     }

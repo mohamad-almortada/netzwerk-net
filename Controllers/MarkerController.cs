@@ -28,7 +28,7 @@ public class MarkerController(IMarkerService markerService) : ControllerBase
     [HttpGet("{latitude}/{longitude}")]
     public async Task<ActionResult<MarkerDto>> GetMarkerByCoodrinate(string latitude, string longitude)
     {
-        var marker = await markerService.GetMarkerAsync(Convert.ToDecimal(latitude), Convert.ToDecimal(longitude));
+        var marker = await markerService.GetMarkerAsync(latitude, longitude);
         if (marker == null) return NotFound();
 
         return Ok(marker);

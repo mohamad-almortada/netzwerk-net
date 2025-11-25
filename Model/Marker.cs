@@ -9,8 +9,8 @@ public class Marker
     public int? UserId { get; set; }
     [MaxLength(64)] public string Title { get; set; } = string.Empty;
     [MaxLength(256)] public string Description { get; set; } = string.Empty;
-    public decimal Lat { get; set; }
-    public decimal Lon { get; set; }
+    public string Lat { get; set; } = string.Empty;
+    public string Lon { get; set; } = string.Empty;
     [MaxLength(32)] public string Status { get; set; } = string.Empty;
     public int? VerifiedBy { get; set; }
     public DateTime? VerifiedAt { get; set; }

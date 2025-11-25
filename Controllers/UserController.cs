@@ -28,7 +28,7 @@ public class UserController(IUserService userService) : ControllerBase
     [HttpGet("{latitude}/{longitude}")]
     public async Task<ActionResult<UsersDto>> GetUserByCoodrinate(string latitude, string longitude)
     {
-        var user = await userService.GetUserAsync(Convert.ToDecimal(latitude), Convert.ToDecimal(longitude));
+        var user = await userService.GetUserAsync(latitude, longitude);
         if (user == null) return NotFound();
 
         return Ok(user);

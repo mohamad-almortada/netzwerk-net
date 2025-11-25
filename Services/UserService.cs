@@ -46,7 +46,7 @@ public class UserService(ApiContext apiContext, ILogger<UserService> logger, IMa
         return userDto;
     }
 
-    public async Task<UsersDto?> GetUserAsync(decimal latitude, decimal longitude)
+    public async Task<UsersDto?> GetUserAsync(string latitude, string longitude)
     {
         var user = (await apiContext.Markers
             .Include(u => u.User)

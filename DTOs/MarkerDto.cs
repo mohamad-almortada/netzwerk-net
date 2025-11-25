@@ -4,8 +4,8 @@ public class MarkerDto
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public decimal Lat { get; set; }
-    public decimal Lon { get; set; }
+    public string Lat { get; set; } = string.Empty;
+    public string Lon { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public int? VerifiedBy { get; set; }
     public DateTime? VerifiedAt { get; set; }
