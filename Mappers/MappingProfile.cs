@@ -17,6 +17,8 @@ public class MappingProfile : Profile
         CreateMap<Marker, MarkerDto>();
         CreateMap<Map, MapDto>();
         CreateMap<MapDto, Map>();
+        CreateMap<CategoryDto, Category>();
+        CreateMap<Category, CategoryDto>();
         CreateMap<Vote, VoteDto>();
         CreateMap<VoteDto, Vote>();
     }
