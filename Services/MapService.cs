@@ -43,9 +43,9 @@ public class MapService(ApiContext apiContext, IMapper mapper) : IMapService
 
     public async Task<bool> DeleteMapAsync(int mapId)
     {
-        var map = await apiContext.Markers.FindAsync(mapId);
+        var map = await apiContext.Maps.FindAsync(mapId);
         if (map == null) return false;
-        apiContext.Markers.Remove(map);
+        apiContext.Maps.Remove(map);
         await apiContext.SaveChangesAsync();
         return true;
     }
