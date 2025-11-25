@@ -20,6 +20,7 @@ public class MappingProfile : Profile
         CreateMap<CategoryDto, Category>();
         CreateMap<Category, CategoryDto>();
         CreateMap<Vote, VoteDto>();
+        CreateMap<UsersDto, User>();
         CreateMap<VoteDto, Vote>();
     }
 }
