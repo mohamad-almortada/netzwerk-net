@@ -5,6 +5,7 @@ namespace Netzwerk.DTOs;
 
 public class UsersDto
 {
+    public int Id { get; set; }
     public required string Username { get; set; }
     public string Email { get; set; } = string.Empty;
 
