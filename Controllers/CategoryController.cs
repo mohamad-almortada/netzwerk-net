@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Netzwerk.DTOs;
@@ -6,6 +7,7 @@ using Netzwerk.Interfaces;
 namespace Netzwerk.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class CategoryController(ICategoryService categoryService) : ControllerBase
 {
     [HttpGet]
