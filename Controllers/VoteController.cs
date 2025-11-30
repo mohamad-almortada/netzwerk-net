@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Netzwerk.DTOs;
@@ -7,6 +8,7 @@ namespace Netzwerk.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class VoteController(IVoteService voteService) : ControllerBase
 {
     [HttpGet]

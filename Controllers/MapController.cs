@@ -8,7 +8,7 @@ namespace Netzwerk.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[AllowAnonymous]
+[Authorize]
 public class MapController(IMapService mapService) : ControllerBase
 {
     [HttpGet]

@@ -8,8 +8,7 @@ namespace Netzwerk.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[AllowAnonymous]
-
+[Authorize]
 public class UserController(IUserService userService) : ControllerBase
 {
     [HttpGet]
@@ -38,6 +37,7 @@ public class UserController(IUserService userService) : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> PostUser(UsersDto userDto)
     {
         try
