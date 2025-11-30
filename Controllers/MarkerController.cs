@@ -18,7 +18,7 @@ public class MarkerController(IMarkerService markerService) : ControllerBase
         return Ok(markers);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<MarkerDto>> GetMarker(int id)
     {
         var marker = await markerService.GetMarkerAsync(id);
@@ -50,16 +50,16 @@ public class MarkerController(IMarkerService markerService) : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteMarker(int id)
     {
         var marker = await markerService.DeleteMarkerAsync(id);
-        if (marker == false) return NotFound();
+        if (!marker) return NotFound();
 
         return NoContent();
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> PutMarker(int id, MarkerDto marker)
     {
         try

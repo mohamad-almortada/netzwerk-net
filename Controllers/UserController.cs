@@ -55,12 +55,12 @@ public class UserController(IUserService userService) : ControllerBase
     public async Task<IActionResult> DeleteUser(int id)
     {
         var user = await userService.DeleteUserAsync(id);
-        if (user == false) return NotFound();
+        if (!user) return NotFound();
 
         return NoContent();
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> PutUser(int id, UsersDto user)
     {
         try

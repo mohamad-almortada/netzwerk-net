@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 public class JwtTokenService
 {
     private readonly string _key;
-    public JwtTokenService(IConfiguration cfg) => _key = cfg["JWT:Key"];
+    public JwtTokenService(IConfiguration cfg, string key) => _key = cfg["JWT:Key"] ?? throw new ArgumentNullException($"JWT:Key");
 
     public string CreateToken(IEnumerable<Claim> claims, TimeSpan validFor)
     {

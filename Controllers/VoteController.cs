@@ -18,7 +18,7 @@ public class VoteController(IVoteService voteService) : ControllerBase
         return Ok(markers);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<VoteDto>> GetVote(int id)
     {
         var marker = await voteService.GetVoteAsync(id);
@@ -42,16 +42,16 @@ public class VoteController(IVoteService voteService) : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteVote(int id)
     {
         var marker = await voteService.DeleteVoteAsync(id);
-        if (marker == false) return NotFound();
+        if (!marker) return NotFound();
 
         return NoContent();
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> PutVote(int id, VoteDto marker)
     {
         try

@@ -18,7 +18,7 @@ public class MapController(IMapService mapService) : ControllerBase
         return Ok(markers);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<MapDto>> GetMap(int id)
     {
         var marker = await mapService.GetMapAsync(id);
@@ -42,16 +42,16 @@ public class MapController(IMapService mapService) : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteMap(int id)
     {
         var marker = await mapService.DeleteMapAsync(id);
-        if (marker == false) return NotFound();
+        if (!marker) return NotFound();
 
         return NoContent();
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> PutMap(int id, MapDto marker)
     {
         try

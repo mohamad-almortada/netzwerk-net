@@ -44,7 +44,7 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-            new string[] { }
+            []
         }
     });
 });
@@ -90,7 +90,7 @@ builder.Services.AddAuthentication(options =>
             ValidIssuer = jwtSettings["Issuer"],
             ValidAudience = jwtSettings["Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(jwtSettings["Key"]))
+                Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? throw new InvalidOperationException())),
         };
     });
 

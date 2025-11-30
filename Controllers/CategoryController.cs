@@ -17,7 +17,7 @@ public class CategoryController(ICategoryService categoryService) : ControllerBa
         return Ok(markers);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<CategoryDto>> GetCategory(int id)
     {
         var marker = await categoryService.GetCategoryAsync(id);
@@ -41,16 +41,16 @@ public class CategoryController(ICategoryService categoryService) : ControllerBa
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
         var marker = await categoryService.DeleteCategoryAsync(id);
-        if (marker == false) return NotFound();
+        if (!marker) return NotFound();
 
         return NoContent();
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> PutCategory(int id, CategoryDto marker)
     {
         try

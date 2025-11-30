@@ -18,6 +18,7 @@ using System.Security.Claims;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class AuthController(JwtTokenService jwt, UserManager<ApplicationUser> um, ApiContext db, IOptions<JwtOptions> _jwtOptions)
     : ControllerBase
 {
