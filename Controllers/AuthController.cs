@@ -1,11 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using BCrypt.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Netzwerk.Data;
+using Netzwerk.DTOs;
+using Netzwerk.Interfaces;
 using Netzwerk.Model;
 using Netzwerk.Services;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
@@ -19,28 +22,31 @@ using System.Security.Claims;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class AuthController(JwtTokenService jwt, UserManager<ApplicationUser> um, ApiContext db, IOptions<JwtOptions> _jwtOptions)
+public class AuthController(
+    JwtTokenService jwt,
+    ApiContext db,
+    IOptions<JwtOptions> jwtOptions,
+    IUserService userService)
     : ControllerBase
 {
-    
-     [HttpPost("login")]
+    [HttpPost("login")]
     [AllowAnonymous]
     public IActionResult Login([FromBody] LoginRequest request)
     {
         var user = db.Users.SingleOrDefault(u => u.Username == request.Username);
-        if (user == null)
+        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash, false, HashType.SHA256))
             return Unauthorized("Invalid username or password");
 
-        if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash.ToString()))
-            return Unauthorized("Invalid username or password");
-
-        var token = GenerateJwtToken(user);
+        var token = jwt.CreateToken([
+            new Claim("uid", user.Id.ToString()),
+            new Claim("role", "User")
+        ], TimeSpan.FromDays(30), jwtOptions.Value.Issuer, jwtOptions.Value.Audience, jwtOptions.Value.Key);
         return Ok(new { token });
     }
 
     private string GenerateJwtToken(User user)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Value.Key));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.Key));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
@@ -50,16 +56,16 @@ public class AuthController(JwtTokenService jwt, UserManager<ApplicationUser> um
         };
 
         var token = new JwtSecurityToken(
-            issuer: _jwtOptions.Value.Issuer,
-            audience: _jwtOptions.Value.Audience,
+            issuer: jwtOptions.Value.Issuer,
+            audience: jwtOptions.Value.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(_jwtOptions.Value.ExpiresHours),
+            expires: DateTime.UtcNow.AddHours(jwtOptions.Value.ExpiresHours),
             signingCredentials: creds
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-    
+
     [HttpPost("guest")]
     public IActionResult Guest()
     {
@@ -72,34 +78,39 @@ public class AuthController(JwtTokenService jwt, UserManager<ApplicationUser> um
             new Claim(JwtRegisteredClaimNames.Jti, jti)
         };
 
-        var token = jwt.CreateToken(claims, TimeSpan.FromHours(1));
+        var token = jwt.CreateToken(claims, TimeSpan.FromHours(1), jwtOptions.Value.Issuer, jwtOptions.Value.Audience, jwtOptions.Value.Key);
         return Ok(new { token, expires = DateTime.UtcNow.AddHours(1) });
     }
 
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
         var permanentCount = await db.Users.CountAsync();
-        if (permanentCount >= 50) return BadRequest("Permanent user registration is closed (limit reached).");
+        if (permanentCount >= 50) return BadRequest("User limit reached");
 
-        var user = new ApplicationUser { UserName = dto.Email, Email = dto.Email, IsGuest = false };
-        var res = await um.CreateAsync(user, dto.Password);
-        if (!res.Succeeded) return BadRequest(res.Errors);
+        var user = await userService.CreateUserAsync(new UsersDto()
+        {
+            Username = dto.Email,
+            Email = dto.Email,
+            Password = dto.Password
+        });
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.Username),
             new Claim("role", "User")
         };
-        var token = jwt.CreateToken(claims, TimeSpan.FromDays(30)); 
+        var token = jwt.CreateToken(claims, TimeSpan.FromDays(30), jwtOptions.Value.Issuer, jwtOptions.Value.Audience, jwtOptions.Value.Key);
         return Ok(new { token, userId = user.Id });
     }
 }
 
 public record RegisterDto(string Email, string Password);
+
 public class LoginRequest
 {
     public string Username { get; set; } = string.Empty;
-    public string Password { get; set; }  = string.Empty;
+    public string Password { get; set; } = string.Empty;
 }

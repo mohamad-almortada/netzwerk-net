@@ -54,14 +54,6 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApiContext>(options =>
     options.UseNpgsql(connectionString));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-    {
-        options.Password.RequireDigit = false;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequiredLength = 6;
-    })
-    .AddEntityFrameworkStores<ApiContext>()
-    .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMarkerService, MarkerService>();
