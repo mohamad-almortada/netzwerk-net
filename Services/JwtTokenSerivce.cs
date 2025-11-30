@@ -5,10 +5,9 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-public class JwtTokenService
+public class JwtTokenService(IConfiguration cfg)
 {
-    private readonly string _key;
-    public JwtTokenService(IConfiguration cfg, string key) => _key = cfg["JWT:Key"] ?? throw new ArgumentNullException($"JWT:Key");
+    private readonly string _key = cfg["Jwt:Key"] ?? throw new ArgumentNullException($"Jwt:Key");
 
     public string CreateToken(IEnumerable<Claim> claims, TimeSpan validFor)
     {

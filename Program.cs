@@ -26,7 +26,7 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
-        Description = "Enter JWT token: Bearer {token}",
+        Description = "Enter Jwt token: Bearer {token}",
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
         Scheme = "bearer",
@@ -71,7 +71,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddSingleton<JwtTokenService>();
 
-var jwtSettings = builder.Configuration.GetSection("JWT");
+var jwtSettings = builder.Configuration.GetSection("Jwt");
 builder.Services.Configure<JwtOptions>(jwtSettings);
 
 builder.Services.AddAuthentication(options =>
