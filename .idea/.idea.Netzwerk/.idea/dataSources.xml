@@ -9,5 +9,12 @@
       <jdbc-url>Server=localhost,1433;Database=NetzwerkDb;User=sa;Password=a1b2c3d4.M;TrustServerCertificate=true;</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="myapp@localhost" uuid="8af6c611-5714-4b72-ba4d-eae966fa8351">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/myapp</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

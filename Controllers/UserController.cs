@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Netzwerk.DTOs;
@@ -7,6 +8,8 @@ namespace Netzwerk.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[AllowAnonymous]
+
 public class UserController(IUserService userService) : ControllerBase
 {
     [HttpGet]

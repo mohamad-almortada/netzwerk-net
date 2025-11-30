@@ -1,8 +1,14 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Netzwerk.Data;
 using Netzwerk.Model;
 using Netzwerk.Services;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Netzwerk.Controllers;
 
@@ -12,9 +18,47 @@ using System.Security.Claims;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(JwtTokenService jwt, UserManager<ApplicationUser> um, ApiContext db)
+public class AuthController(JwtTokenService jwt, UserManager<ApplicationUser> um, ApiContext db, IOptions<JwtOptions> _jwtOptions)
     : ControllerBase
 {
+    
+     [HttpPost("login")]
+    [AllowAnonymous]
+    public IActionResult Login([FromBody] LoginRequest request)
+    {
+        var user = db.Users.SingleOrDefault(u => u.Username == request.Username);
+        if (user == null)
+            return Unauthorized("Invalid username or password");
+
+        if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash.ToString()))
+            return Unauthorized("Invalid username or password");
+
+        var token = GenerateJwtToken(user);
+        return Ok(new { token });
+    }
+
+    private string GenerateJwtToken(User user)
+    {
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Value.Key));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+            new Claim("uid", user.Id.ToString())
+        };
+
+        var token = new JwtSecurityToken(
+            issuer: _jwtOptions.Value.Issuer,
+            audience: _jwtOptions.Value.Audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(_jwtOptions.Value.ExpiresHours),
+            signingCredentials: creds
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+    
     [HttpPost("guest")]
     public IActionResult Guest()
     {
@@ -53,3 +97,8 @@ public class AuthController(JwtTokenService jwt, UserManager<ApplicationUser> um
 }
 
 public record RegisterDto(string Email, string Password);
+public class LoginRequest
+{
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; }  = string.Empty;
+}

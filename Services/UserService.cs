@@ -9,18 +9,22 @@ namespace Netzwerk.Services;
 
 public class UserService(ApiContext apiContext, ILogger<UserService> logger, IMapper mapper) : IUserService
 {
-    public async Task<User> CreateUserAsync(UsersDto userDto)
-    {
-        var myUser = mapper.Map<User>(userDto);
+   public async Task<User> CreateUserAsync(UsersDto userDto)
+{
+    var myUser = mapper.Map<User>(userDto);
 
-        if (!IsEmailUnique(myUser.Email)) throw new DbUpdateException("Email already in use");
+    if (!IsEmailUnique(myUser.Email))
+        throw new DbUpdateException("Email already in use");
 
-        myUser.CreatedAt = DateTime.Now;
+    myUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
 
-        await apiContext.Users.AddAsync(myUser);
-        await apiContext.SaveChangesAsync();
-        return myUser;
-    }
+    myUser.CreatedAt = DateTime.UtcNow;
+
+    await apiContext.Users.AddAsync(myUser);
+    await apiContext.SaveChangesAsync();
+
+    return myUser;
+}
 
 
     public async Task<bool> DeleteUserAsync(int userId)
@@ -76,7 +80,7 @@ public class UserService(ApiContext apiContext, ILogger<UserService> logger, IMa
 
         user.Username = userDto.Username;
         user.Email = userDto.Email;
-        user.UpdatedAt = DateTime.Now;
+        user.UpdatedAt = DateTime.UtcNow;
 
         await apiContext.SaveChangesAsync();
         return userDto;

@@ -33,7 +33,7 @@ public class MapService(ApiContext apiContext, IMapper mapper) : IMapService
     {
         var map = await apiContext.Maps.FindAsync(mapId);
         if (map == null) return null;
-        map.UpdatedAt = DateTime.Now;
+        map.UpdatedAt = DateTime.UtcNow;
         map.Title = mapDto.Title;
         map.Description = mapDto.Description;
         map.IsPublic = mapDto.IsPublic;

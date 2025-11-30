@@ -13,8 +13,8 @@ public class MarkerService(ApiContext apiContext, IMapper mapper) : IMarkerServi
     {
         var markerToAdd = mapper.Map<Marker>(markerDto);
         var marker = await apiContext.Markers.AddAsync(markerToAdd);
-        markerToAdd.CreatedAt = DateTime.Now;
-        markerToAdd.UpdatedAt = DateTime.Now;
+        markerToAdd.CreatedAt = DateTime.UtcNow;
+        markerToAdd.UpdatedAt = DateTime.UtcNow;
 
         await apiContext.SaveChangesAsync();
         return markerDto;
@@ -47,10 +47,10 @@ public class MarkerService(ApiContext apiContext, IMapper mapper) : IMarkerServi
         marker.Description = markerDto.Description;
         marker.Lat = markerDto.Lat;
         marker.Lon = markerDto.Lon;
-        marker.UpdatedAt = DateTime.Now;
+        marker.UpdatedAt = DateTime.UtcNow;
         marker.Status = markerDto.Status;
         marker.VerifiedBy = markerDto.VerifiedBy;
-        marker.VerifiedAt = DateTime.Now;
+        marker.VerifiedAt = DateTime.UtcNow;
         marker.MapId = markerDto.MapId;
         marker.UserId = markerDto.UserId;
         await apiContext.SaveChangesAsync();

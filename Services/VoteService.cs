@@ -13,7 +13,7 @@ public class VoteService(ApiContext apiContext, IMapper mapper) : IVoteService
     {
         var vote = mapper.Map<Vote>(voteDto);
         await apiContext.AddAsync(vote);
-        vote.CreatedAt = DateTime.Now;
+        vote.CreatedAt = DateTime.UtcNow;
         await apiContext.SaveChangesAsync();
         return mapper.Map<VoteDto>(vote);
     }
